@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>js插件_警告框</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/examples/jumbotron/jumbotron.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie-emulation-modes-warning.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/js/bootstrap.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie10-viewport-bug-workaround.js"></script>
+</head>
+<body>
+    <!--============ alert-danger 模态框 ============ -->
+    <div class="modal fade " id="myAlert" style="z-index:2000; ">
+        <div class="modal-backdrop in" style="z-index:1900"></div>
+        <div class="modal-dialog" style="z-index:1901; margin-top:10%; ">
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Warning!</strong> Better check yourself, you're not looking too good.
+              </div>
+        </div>
+    </div>
+    <!--============ alert-danger 模态框 end ============ -->
+
+<script>
+ /*我自己的弹框（基于 bootstrap）*/
+function myAlert(info){
+    $("#warning_info").text(info);
+    $("#myAlert").modal("show");
+    
+}
+
+myAlert('test')
+window.setTimeout(function(){
+    $('[data-dismiss="alert"]').alert('close');
+    $("#myAlert").modal('hide');  //手动关闭
+},2000);
+window.setTimeout(function(){
+},2000);
+</script>
+
+</body>
+</html>

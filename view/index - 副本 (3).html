@@ -1,0 +1,328 @@
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/jumbotron/">
+
+    <title>OnlineIde</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/examples/jumbotron/jumbotron.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie-emulation-modes-warning.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/dist/js/bootstrap.min.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.31/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <!--====================== nav 导航栏 =====================-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Online IDE</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <div class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="username" id="username" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="password" id="password" class="form-control">
+            </div>
+            <button type="submit" id="sign_in" class="btn btn-success">登录</button>
+            <button type="submit" id="register" class="btn btn-success"
+                    data-toggle="modal" data-target="#myModal">注册</button>
+            <button type="button" id="exit_btn" class="btn btn-primary" style="display: none;">登出</button>  
+
+          </div>
+         
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    <!--====================== nav 导航栏 end ====================== -->
+
+    <div class="control-panel">
+      Select Language:
+      &nbsp; &nbsp;
+      <select id="languages" class="languages" onchange="changeLanguage()">
+          <option value="gcc"> C++ </option>
+          <option value="java"> Java </option>
+          <option value="python3"> python3 </option>
+      </select>
+    </div>
+    <div class="editor" id="editor"></div>
+
+    <div class="filename"> 
+        请输入文件名：<input type="text" id="filename" > </div>
+    </div>
+    <div class="button-container">
+        <button class="btn" onclick="executeCode()"> Run </button>
+    </div>
+
+    输出：
+    <div class="output" style="white-space:pre-line";></div>
+
+    <link rel="stylesheet" href="css/ide.css" />
+    <script src="js/lib/ace.js"></script>
+    <script src="js/lib/theme-monokai.js"></script>
+    <script src="js/myide.js"></script>
+
+    <!--======================  注册模态框（Modal） ======================-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">注册</h4>
+              </div>
+              <div class="modal-body">
+                  <input type="text"class="form-control" id="reg_email" placeholder="input your email" aria-describedby="basic-addon2">
+                  <input type="password" class="form-control" id="reg_password" placeholder="password" aria-describedby="basic-addon2">
+                  <input type="password" class="form-control" id="reg_repassword" placeholder="password again" aria-describedby="basic-addon2">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button type="button" id="register_btn" class="btn btn-primary">提交</button>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+    <!--======================  注册模态框（Modal）end ======================-->
+
+    <!--========================== alert-danger 模态框 ========================== -->
+    <div class="modal fade " id="myAlert" style="z-index:2000; ">
+      <div class="modal-backdrop in" style="z-index:1900"></div>
+      <div class="modal-dialog" style="z-index:1901; margin-top:10%; ">
+          <div class="alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong id="warning_info">Lorem</strong> 
+          </div>
+      </div>
+  </div>
+    <!--========================== alert-danger 模态框 end ========================== -->
+
+    <!--========================== alert-success 模态框 ========================== -->
+    <div class="modal fade " id="myAlertSuccess" style="z-index:2000; ">
+      <div class="modal-backdrop in" style="z-index:1900"></div>
+      <div class="modal-dialog" style="z-index:1901; margin-top:10%; ">
+          <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong id="success_info">Lorem</strong> 
+          </div>
+      </div>
+    </div>
+    <!--========================== alert-danger 模态框 end ========================== -->
+
+
+    <script>
+      // 检查登录状态
+      var serial = localStorage.getItem('serial')
+      if (serial != null){
+        // serial 存在说明已经登录
+        var username = localStorage.getItem("username")
+        // 让登录、注册和密码栏消失
+        document.getElementById('sign_in').style.display = "none";
+        document.getElementById('register').style.display = "none";
+        document.getElementById('password').style.display = "none";
+        // 显示登出按钮
+        document.getElementById('exit_btn').style.display = "";
+        // 修改成用户名显示
+        $("#username").attr("disabled",true); 
+        document.getElementById('username').value="";
+        document.getElementById('username').placeholder="welcome" + username;
+      }
+    </script>
+    <!--======================  注册提交事件 ======================-->
+    <script>
+      $("#register_btn").on("click", function () { 
+        // 获取输入框消息
+        var username = document.getElementById('reg_email').value;
+        var password = document.getElementById('reg_password').value;
+        var repassword = document.getElementById('reg_repassword').value;
+        console.log(username + password + repassword)
+        // 构造请求参数
+        var j = {
+          "username": username,
+          "password": password,
+          "rePassword": repassword
+        }
+        // post请求api
+        $.ajax({ 
+          url:'http://localhost:8088/onlineIde/api/v1/user/register', 
+          data:JSON.stringify(j), 
+          type:'post', 
+          dataType:'json', 
+          headers:{ 
+          Accept:"application/json", 
+            "Content-Type":"application/json"
+          }, 
+          processData:false, 
+          cache:false
+        }).done(function (data) {
+          var jsonData = JSON.stringify(data);// 转成JSON格式
+          var result = $.parseJSON(jsonData);// 转成JSON对象
+          console.log(result['code'])
+
+          var code = result['code']
+          var message = result['message']
+          console.log(message)
+          // 如果成功
+          if (code == 20000){
+            $("#success_info").text('注册成功 O(∩_∩)O' );
+            $("#myAlertSuccess").modal("show"); 
+            window.setTimeout(function(){
+              $("#myAlertSuccess").modal('hide');  //手动关闭success模态框
+              $("#myModal").modal('hide');  //手动关闭注册模态框
+            },1500); 
+          } else{
+            // 对应账号已存在
+            $("#warning_info").text(message);
+            $("#myAlert").modal("show"); 
+            // 1.5秒自动关闭        
+            window.setTimeout(function(){
+              $("#myAlert").modal('hide');  //手动关闭danger模态框
+            },1500); 
+          }
+        }).fail(function (data){
+          // 弹框
+          $("#warning_info").text('服务器发送错误 TAT' );
+          $("#myAlert").modal("show"); 
+          // 1.5秒自动关闭        
+          window.setTimeout(function(){
+            $("#myAlert").modal('hide');  //手动关闭danger模态框
+          },1500); 
+        
+        }); 
+      });
+    </script>
+    <!--======================  注册提交事件 end ======================-->
+    
+    <!--======================  登录事件  ======================-->
+    <script>
+       $("#sign_in").on("click", function () { 
+        // 获取输入框消息
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        // 构造请求参数
+        var j = {
+          "username": username,
+          "password": password,
+        }
+        // 发送登录url
+        $.ajax({ 
+          url:'http://localhost:8088/onlineIde/api/v1/user/login', 
+          data:JSON.stringify(j), 
+          type:'post', 
+          dataType:'json', 
+          headers:{ 
+          Accept:"application/json", 
+            "Content-Type":"application/json"
+          }, 
+          processData:false, 
+          cache:false
+        }).done(function (data) {
+          var code = data['code']
+          var message = data['message']
+          //登录成功，保存serial，取消登录显示
+          if (code == 20000) {
+            $("#success_info").text('登录成功 O(∩_∩)O' );
+            $("#myAlertSuccess").modal("show"); 
+            window.setTimeout(function(){
+              $("#myAlertSuccess").modal('hide');  //手动关闭success模态框
+            },1500); 
+            var serial = data['message']
+            // 保存serial, uername
+            localStorage.setItem('serial', serial)
+            localStorage.setItem("username", username)
+
+            // 让登录、注册和密码栏消失
+            document.getElementById('sign_in').style.display = "none";
+            document.getElementById('register').style.display = "none";
+            document.getElementById('password').style.display = "none";
+            // 显示登出按钮
+            document.getElementById('exit_btn').style.display = "";
+            // 修改成用户名显示
+            $("#username").attr("disabled",true); 
+            document.getElementById('username').value="";
+            document.getElementById('username').placeholder="欢迎" + username;
+            
+          } else{
+            // 对应账号密码错误或者为空
+            $("#warning_info").text(message);
+            $("#myAlert").modal("show"); 
+            // 1.5秒自动关闭        
+            window.setTimeout(function(){
+              $("#myAlert").modal('hide');  //手动关闭danger模态框
+            },1500); 
+          }
+         
+          
+        }).fail(function (data){
+          // 弹框
+          $("#warning_info").text('服务器发送错误 TAT' );
+          $("#myAlert").modal("show"); 
+          // 1.5秒自动关闭        
+          window.setTimeout(function(){
+            $("#myAlert").modal('hide');  //手动关闭danger模态框
+          },1500); 
+        
+        })
+      });
+    </script>
+    <!--======================  登录事件 end ======================-->
+
+
+    <!--======================  登出事件 end ======================-->
+    <script>
+       $("#exit_btn").on("click", function () {
+          //清除localStorage
+          localStorage.clear('serial')
+          localStorage.clear('username')
+          // 让登录、注册和密码栏显示
+          document.getElementById('sign_in').style.display = "";
+          document.getElementById('register').style.display = "";
+          document.getElementById('password').style.display = "";
+          // 登出按钮消失
+          document.getElementById('exit_btn').style.display = "none";
+          // 修改用户名显示,可编辑
+          $("#username").attr("disabled",false); 
+          document.getElementById('username').value="";
+          document.getElementById('password').value="";
+
+          document.getElementById('username').placeholder="username";
+        });
+    </script>
+  </body>
+  <style type="text/css">
+    .modal-body .form-control {
+      margin-bottom: 10px;
+    }
+ 
+  </style>
+</html>

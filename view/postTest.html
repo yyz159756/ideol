@@ -1,0 +1,46 @@
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+
+<input type="button" id="save" value="save"/> 
+<input type="button" id="getInput" value="getInput"/> 
+
+<input type="text" id="value" placeholder="要获取的输入的值"/>
+
+<script>
+  $("#getInput").on("click", function () { 
+    var g=document.getElementById('value').value;
+    alert(g)
+  });
+ 
+
+</script>
+
+
+<script>
+$("#save").on("click", function () { 
+  var j = {
+    "filename":"a.py",
+    "code":"import sys \nif __name__ == '__main__': \n  print('hello world ')",
+    "type":"python3",
+    "serial": "null"
+  } 
+  $.ajax({ 
+    url:'http://localhost:8088/onlineIde/api/v1/compile/', 
+    data:JSON.stringify(j), 
+    type:'post', 
+    dataType:'json', 
+    headers:{ 
+    Accept:"application/json", 
+      "Content-Type":"application/json"
+    }, 
+    processData:false, 
+    cache:false
+  }).done(function (data) {
+    var jsonData = JSON.stringify(data);// 转成JSON格式
+    var result = $.parseJSON(jsonData);// 转成JSON对象
+    console.log(result)
+    console.log(result['code'])
+  }); 
+
+}); 
+</script>

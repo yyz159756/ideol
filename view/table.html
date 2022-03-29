@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示文档</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <h3>动态创建表格1</h3>
+    <input type="button" value="创建表格" onclick="creatTab()">
+
+    <div class="modal-body">
+    <script>
+    function creatTab(){
+        rows=document.getElementById('rows').value
+        cols=document.getElementById('cols').value
+        div1=document.getElementById('div1')
+        // alert(rows+'\n'+cols)
+        var tab='<table class="table">'
+        for(var i=0;i<rows;i++){
+            tab+='<tr>'
+            for(var j=0;j<cols;j++){
+                tab+="<td style='background:green'>"+i+j+"</td>"
+            }
+             tab+='</tr>'
+        }
+        tab+='</table>';
+        div1.innerHTML=tab
+    }
+    </script>
+</body>
+</html>
